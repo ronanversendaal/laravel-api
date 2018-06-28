@@ -30,23 +30,31 @@ Route::group(['prefix' => 'v1'], function(){
         'as' => 'articles.index',
         'uses' => 'ArticleController@index'
     ]);
+    Route::get('/articles/{article}', [
+        'as' => 'articles.show',
+        'uses' => 'ArticleController@show'
+    ]);
 
     Route::get('/projects', [
         'as' => 'projects.index',
         'uses' => 'ProjectController@index'
+    ]);
+    Route::get('/projects/{project}', [
+        'as' => 'projects.show',
+        'uses' => 'ProjectController@show'
     ]);
 
 
     Route::group(['middleware' => 'jwt'], function(){
         Route::resource(
             'projects', 'ProjectController', ['except' => [
-                'create', 'edit', 'index'
+                'create', 'edit', 'index', 'show'
             ]]
         );
 
         Route::resource(
             'articles', 'ArticleController', ['except' => [
-                'create', 'edit', 'index'
+                'create', 'edit', 'index', 'show'
             ]]
         );
     });

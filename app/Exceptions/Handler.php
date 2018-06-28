@@ -4,11 +4,12 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -58,13 +59,17 @@ class Handler extends ExceptionHandler
         ) {
             return response(['message' => 'Resource not found'], 404);
         }
+
         if ($exception instanceof MethodNotAllowedHttpException) {
-            
-            return response(['message' => 'Not allowed'], 405);
+            return response(['message' => $exception], 405);
         }
-        if ($exception instanceof UnauthorizedException) {
+        
+        if ($exception instanceof UnauthorizedException
+            || $exception instanceof UnauthorizedHttpException 
+        ) {
             return response(['message' => 'Unauthorized'], 401);
         }
+        
         if ($exception instanceof AuthenticationException) {
             return response(['message' => 'Unauthenticated'], 401);
         }
