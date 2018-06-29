@@ -53,8 +53,9 @@ class RefreshToken extends BaseMiddleware
                 $newToken = $this->auth->refresh(); // Get new token.
                 $gracePeriod = $this->auth->manager()->getBlacklist()->getGracePeriod();
                 $expiresAt = Carbon::now()->addSeconds($gracePeriod);
-                Cache::put($key, $newtoken, $expiresAt);
+                Cache::put($key, $newToken, $expiresAt);
             } catch (JWTException $e) {
+                
                 throw new UnauthorizedHttpException('jwt-auth', $e->getMessage(), $e, $e->getCode());
             }
         }
