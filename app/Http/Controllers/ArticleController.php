@@ -70,7 +70,15 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         try{
-            $article->fill($request->all())->save();
+
+            $article_data = $request->only(['title', 'subtitle', 'body']);
+            $article_data['published_at'] = $request->get('published_at');
+
+            if($article_data['published_at'] === 'null'){
+                $article_data['published_at'] = null;
+            }
+
+            $article->fill($article_data)->save();
             
             return response(new ArticleResource($article));
         } catch (Exception $e) {
