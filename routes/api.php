@@ -46,16 +46,38 @@ Route::group(['prefix' => 'v1'], function(){
 
 
     Route::group(['middleware' => 'jwt'], function(){
+
         Route::resource(
             'projects', 'ProjectController', ['except' => [
                 'create', 'edit', 'index', 'show'
             ]]
         );
+        Route::get('projects/{article}/albums', [
+            'as' => 'projects.albums',
+            'uses' => 'AlbumController@project'
+        ]);
 
         Route::resource(
             'articles', 'ArticleController', ['except' => [
                 'create', 'edit', 'index', 'show'
-            ]]
-        );
+            ]
+        ]);
+
+        Route::get('articles/{article}/albums', [
+            'as' => 'articles.albums',
+            'uses' => 'AlbumController@article'
+        ]);
+
+        Route::post('/images/{album}', [
+            'as' => 'images.store',
+            'uses' => 'ImageController@store'
+        ]);
+
+        Route::get('albums/{album}', [
+            'as' => 'albums.show',
+            'uses' => 'AlbumController@show'
+        ]);
+
+
     });
 });

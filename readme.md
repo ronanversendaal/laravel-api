@@ -7,6 +7,11 @@ Install dependencies
 composer install
 ```
 
+Create symbolink link for file uploads
+```
+php artisan storage:link
+```
+
 Run database migrations and seeds
 ```
 php artisan migrate --seed
