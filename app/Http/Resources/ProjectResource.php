@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Album;
 use App\Image;
+use App\Http\Resources\AlbumCollection;
 use App\Http\Resources\ImageCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,11 +30,11 @@ class ProjectResource extends JsonResource
             'published_at' => $this->published_at
         ];
 
-        if($this->album)
+        if($this->albums)
         {
-            $images = Album::where('article_id', $this->id)->get()->pluck('images')->collapse();
+            $albums = $this->albums;
 
-            $attributes['images'] = new ImageCollection($images);
+            $attributes['albums'] = new AlbumCollection($albums);
         }
 
         return $attributes;

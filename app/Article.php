@@ -14,11 +14,11 @@ class Article extends Model
     ];
 
     protected $dates = [
-        // 'published_at'
+        'published_at'
     ];
 
-    public function album()
+    public function albums()
     {
-        return $this->hasOne(Album::class);
+        return $this->hasMany(Album::class);
     }
 }

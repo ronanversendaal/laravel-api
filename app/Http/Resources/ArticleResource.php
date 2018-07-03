@@ -25,13 +25,12 @@ class ArticleResource extends JsonResource
             'published_at' => $this->published_at
         ];
 
-        if($this->album)
+        if($this->albums)
         {
-            $images = Album::where('article_id', $this->id)->get()->pluck('images')->collapse();
-            
-            $attributes['images'] = new ImageCollection($images);
-        }
+            $albums = $this->albums;
 
+            $attributes['albums'] = new AlbumCollection($albums);
+        }
 
         return $attributes;
     }
