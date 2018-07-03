@@ -25,7 +25,6 @@ class AlbumResource extends JsonResource
             $attributes['images'] = new ImageCollection(Image::where('album_id', $this->id)->get());
         }
 
-
         return $attributes;
     }
 }

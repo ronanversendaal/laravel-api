@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Album extends Model
 {
-    protected $fillable = ['album_id', 'project_id'];
+    protected $fillable = ['article_id', 'project_id'];
 
     public function project()
     {

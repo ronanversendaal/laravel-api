@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ImageResource extends JsonResource
@@ -14,8 +15,13 @@ class ImageResource extends JsonResource
      */
     public function toArray($request)
     {
+        $path = $this->path;
+        if(!filter_var($this->path, FILTER_VALIDATE_URL)){
+            $path = url(Storage::url($this->path));
+        }
         return [
-            'path' => $this->path,
+            'id' => $this->id,
+            'path' => $path,
             'album_id' => $this->album_id,
             'created_at' => $this->created_at
         ];

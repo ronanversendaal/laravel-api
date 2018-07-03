@@ -7,6 +7,7 @@ use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreImageRequest;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class ImageController extends Controller
 {
@@ -25,13 +26,13 @@ class ImageController extends Controller
         try{
 
             if ($request->hasFile('file')) {
-                
+
                 // Get path from uploaded file
                 $path = $request->file('file')->store('public/images/');
 
                 // Create new Image
                 $album->images()->create(
-                    ['path' => url(Storage::url($path))]
+                    ['path' => $path]
                 );
 
                 return response(['error' => false, 'message' => 'Image saved']);
@@ -70,7 +71,20 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        try{
+            if(Storage::exists($image->path)){
+                Storage::delete($image->path);
+            }
+            if ($image->delete()) {
+                return response(['error' => false, 'message' => 'Image deleted']);
+            }
+            throw new FileNotFoundException;
+        } catch(FileNotFoundException $e) {
+            return abort(404);
+        } catch(\Exception $e) {
+            return abort(400);
+        }
+        
     }
 
 }

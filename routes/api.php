@@ -30,6 +30,7 @@ Route::group(['prefix' => 'v1'], function(){
         'as' => 'articles.index',
         'uses' => 'ArticleController@index'
     ]);
+
     Route::get('/articles/{article}', [
         'as' => 'articles.show',
         'uses' => 'ArticleController@show'
@@ -52,7 +53,7 @@ Route::group(['prefix' => 'v1'], function(){
                 'create', 'edit', 'index', 'show'
             ]]
         );
-        Route::get('projects/{article}/albums', [
+        Route::get('projects/{project}/albums', [
             'as' => 'projects.albums',
             'uses' => 'AlbumController@project'
         ]);
@@ -71,6 +72,16 @@ Route::group(['prefix' => 'v1'], function(){
         Route::post('/images/{album}', [
             'as' => 'images.store',
             'uses' => 'ImageController@store'
+        ]);
+
+        Route::delete('/images/{image}', [
+            'as' => 'images.destroy',
+            'uses' => 'ImageController@destroy'
+        ]);
+        
+        Route::post('/albums', [
+            'as' => 'albums.store',
+            'uses' => 'AlbumController@store'
         ]);
 
         Route::get('albums/{album}', [
